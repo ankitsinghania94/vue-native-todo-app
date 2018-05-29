@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-    <!-- <image source={{uri: 'https://images.template.net/wp-content/uploads/2014/06/42567177.jpg'}} style='image-style'/> -->
+    <!-- <img src="'https://images.template.net/wp-content/uploads/2014/06/42567177.jpg'"/> -->
     <view class="text-input-container">
       <view class="text-input-wrapper">
         <text-input placeholder = 'Enter new todo'  v-bind:on-change-text = 'handleOnChangeText' v-model="newTodo"/>
@@ -11,16 +11,38 @@
     </view>
     <scroll-view>
       <view class='todo-wrapper' v-for='(todo, index) in todos' :key='index'>
-        <touchable-opacity v-bind:on-press="() => onTaskPressed(index)">
-          <text v-bind:class="{'text-task-completed': todo.isCompleted, 'text-todo-task': !todo.isCompleted}">
+        <touchable-opacity v-bind:on-press="() => onTaskPressed(index)" v-if="!todo.edited">
+          <text v-bind:class="[todo.isCompleted ? 'text-task-completed' : 'text-todo-task']">
             • {{todo.task}}
           </text>
         </touchable-opacity>
-        <touchable-opacity v-bind:on-press="() => handleDeletePress(index)">
-          <text class="text-color-primary">
-            x
-          </text>
-        </touchable-opacity>
+        <view class="task-input-wrapper" v-if="todo.edited">
+          <text-input placeholder='Enter Task' v-bind:on-change-text="(text) => handleOnChangeTask(text, index)" v-bind:value='todo.task'/>
+        </view>
+        <view class='todo-button-wrapper' v-if="todo.edited">
+          <touchable-opacity v-bind:on-press="() => handleDonePress(index)" class='done-button'>
+            <text class="text-color-primary">
+              DONE
+            </text>
+          </touchable-opacity>
+          <touchable-opacity v-bind:on-press="() => handleCancelPress(index)" class='done-button'>
+            <text class="text-color-primary">
+              X
+            </text>
+          </touchable-opacity>
+        </view>
+        <view class='todo-button-wrapper' v-if="!todo.edited">
+          <touchable-opacity v-bind:on-press="() => handleEditPress(index)" class='edit-button'>
+            <text class="text-color-primary">
+              E
+            </text>
+          </touchable-opacity>
+          <touchable-opacity v-bind:on-press="() => handleDeletePress(index)">
+            <text class="text-color-primary">
+              X
+            </text>
+          </touchable-opacity>
+        </view>
       </view>
     </scroll-view>
   </view>
@@ -33,22 +55,38 @@ export default {
       newTodo: undefined,
       todos: [],
       emptyInput: true,
-      taskStyle: 'text-todo-task'
+      taskStyle: 'text-todo-task',
+      editedText: ''
+      // image: 'https://images.template.net/wp-content/uploads/2014/06/42567177.jpg'
     };
   },
   methods: {
     handleAddPress: function() {
       let todo = {
         task: this.newTodo,
-        isCompleted: false
+        isCompleted: false,
+        edited: false
       }
       this.todos.push(todo)
       this.newTodo = ''
       this.emptyInput = true
     },
+    handleEditPress: function(index) {
+      this.todos[index].edited = true
+    },
+    handleDonePress: function(index) {
+      if (this.editedText !== '')
+        this.todos[index].task = this.editedText
+      this.todos[index].edited = false
+    },
+    handleCancelPress: function(index) {
+      this.todos[index].edited = false
+    },
+    handleOnChangeTask: function(text, index) {
+      this.editedText = text
+    },
     onTaskPressed: function(index) {
       this.todos[index].isCompleted = !this.todos[index].isCompleted
-      console.log(this.todos, 'Check 123')
     },
     handleDeletePress: function(index) {
       this.todos.splice(index, 1)
@@ -69,6 +107,15 @@ export default {
   flex: 1;
   padding-top: 40;
 }
+.todo-button-wrapper {
+  flex-direction: row
+}
+.done-button {
+  margin-left: 40
+}
+.edit-button {
+  padding-right: 20
+}
 .text-color-primary {
   color: rgba(0, 0, 0, 0.767);
 }
@@ -87,6 +134,13 @@ export default {
   flex: 1;
   border-width: 1;
   border-color: rgb(112, 84, 46);
+  justify-content: center;
+  padding: 10
+}
+.task-input-wrapper {
+  flex: 1;
+  border-width: 1;
+  border-color: rgba(201, 29, 29, 0.534);
   justify-content: center;
   padding: 10
 }
