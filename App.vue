@@ -1,18 +1,18 @@
 <template>
   <view class="container">
-    <AddTodo
+    <add-todo
       :onAdd='addTodo'
     />
     <scroll-view>
       <view class='todo-wrapper' v-for='(todo, index) in todos' :key='index'>
-        <TodoItem
+        <todo-item
           :todo='todo'
-          :selectedIndex='index'
-          :onEditPressed='onEditPressed'
-          :editTodo='editTodo'
-          :deleteTodo='deleteTodo'
-          :cancelEdit='cancelEdit'
-          :onTaskPressed='onTaskPressed'
+          :selected-index='index'
+          :edit-pressed='onEditPressed'
+          :edit-todo='editTodo'
+          :delete-todo='deleteTodo'
+          :cancel-edit='cancelEdit'
+          :toggle-task-status='toggleTaskStatus'
         />
       </view>
     </scroll-view>
@@ -49,7 +49,7 @@ export default {
     cancelEdit: function(index) {
       this.todos[index].edited = false
     },
-    onTaskPressed: function(index) {
+    toggleTaskStatus: function(index) {
       this.todos[index].isCompleted = !this.todos[index].isCompleted
     },
     deleteTodo: function(index) {

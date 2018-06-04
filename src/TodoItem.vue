@@ -48,12 +48,12 @@ export default {
     editTodo: Function,
     deleteTodo: Function,
     cancelEdit: Function,
-    onTaskPressed: Function,
-    onEditPressed: Function
+    toggleTaskStatus: Function,
+    editPressed: Function
   },
   methods: {
     editIconPress: function() {
-      this.onEditPressed(this.selectedIndex)
+      this.editPressed(this.selectedIndex)
     },
     checkIconPress: function() {
       if (this.editedTask !== '')
@@ -67,7 +67,7 @@ export default {
       this.cancelEdit(this.selectedIndex)
     },
     handleTaskPressed: function() {
-      this.onTaskPressed(this.selectedIndex)
+      this.toggleTaskStatus(this.selectedIndex)
     },
     deleteIconPress: function(index) {
       this.deleteTodo(this.selectedIndex)
