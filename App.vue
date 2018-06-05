@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <add-todo
-      :onAdd='addTodo'
+      :on-add='addTodo'
     />
     <scroll-view>
       <view class='todo-wrapper' v-for='(todo, index) in todos' :key='index'>
@@ -27,8 +27,7 @@ export default {
   data: function() {
     return {
       newTodo: '',
-      todos: [],
-      taskStyle: 'text-todo-task',
+      todos: []
     };
   },
   components: {
