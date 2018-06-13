@@ -1,9 +1,9 @@
 <template>
   <view class="text-input-container">
     <view class="text-input-wrapper">
-      <text-input placeholder = 'Enter new todo' v-model="newTodo"/>
+      <text-input placeholder="Enter new todo" v-model="newTodo"/>
     </view>
-    <touchable-opacity class="add-button" title="Button" :on-press='addTodo' :disabled="(newTodo === '')">
+    <touchable-opacity class="add-button" title="Button" :on-press="addTodo" :disabled="(newTodo === '')">
       <text class="text-color-primary">ADD</text>
     </touchable-opacity>
   </view>
@@ -32,7 +32,6 @@ export default {
   }
 }
 </script>
->
  
 <style>
 .text-color-primary {
